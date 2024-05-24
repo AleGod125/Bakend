@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
+import os
+
 
 mysql_config = {
     'user': 'root',
@@ -142,7 +144,10 @@ async def delete_user(id: int):
         cursor.close()
 
 
-if __name__ == "__api__":
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))
     uvicorn.run("api:app",
-                host="localhost",
+                host="0.0.0.0",
+                port=port,
                 reload=True)
