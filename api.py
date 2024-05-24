@@ -2,6 +2,7 @@ import mysql.connector
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import uvicorn
 
 mysql_config = {
     'user': 'root',
@@ -139,3 +140,9 @@ async def delete_user(id: int):
         raise HTTPException(status_code=500, detail=f"Error al eliminar el usuario {e}")
     finally:
         cursor.close()
+
+
+if __name__ == "__api__":
+    uvicorn.run("api:app",
+                host="localhost",
+                reload=True)
