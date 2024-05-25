@@ -1,4 +1,3 @@
-import os
 import mysql.connector
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
@@ -24,7 +23,7 @@ class UserApi(BaseModel):
     PhoneNumber: int
     Email: str
     Password: str
-    Brd: str
+    Brd:str
 
 app = FastAPI()
 
@@ -98,6 +97,8 @@ async def login_user(email: str, password: str):
     finally:
         cursor.close()
 
+
+
 @app.get('/getID')
 async def get_ID(email: str, password: str):
     cursor = Connection.cursor(dictionary=True)
@@ -117,7 +118,7 @@ async def get_UserInfo(id: int):
     query = "SELECT * FROM users WHERE UserID = %s"
 
     try:
-        cursor.execute(query, (id,))
+        cursor.execute(query,(id,))
         return cursor.fetchall()
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener los usuarios {e}")
@@ -141,6 +142,7 @@ async def delete_user(id: int):
         cursor.close()
 
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("api:app", host="0.0.0.0", port=port, reload=True)
+if __name__ == "__api__":
+    uvicorn.run("api:app",
+                host="localhost",
+                reload=True)
