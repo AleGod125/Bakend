@@ -142,7 +142,7 @@ async def delete_user(id: int):
         cursor.close()
 
 
-if __name__ == "__api__":
+if __name__ == "__main__":
     uvicorn.run("api:app",
                 host="localhost",
                 reload=True)
