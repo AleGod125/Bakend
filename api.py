@@ -10,7 +10,6 @@ DATABASE = 'bakendbd'
 def get_connection():
     return sqlite3.connect(DATABASE)
 
-# Crear la tabla `users` si no existe al inicio de la aplicación
 def create_table():
     conn = get_connection()
     cursor = conn.cursor()
@@ -28,20 +27,8 @@ def create_table():
     conn.commit()
     conn.close()
 
-# Llamar a la función para crear la tabla al iniciar la aplicación
+# Crear la tabla al iniciar la aplicación
 create_table()
-
-def check_table_exists():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users';")
-    table_exists = cursor.fetchone()
-    conn.close()
-    return table_exists is not None
-
-if not check_table_exists():
-    create_table()
-
 
 class UserApi(BaseModel):
     Nombre: str
@@ -56,9 +43,9 @@ app = FastAPI()
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://alegod125.github.io"],  # Cambia esto a tu dominio frontend
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -173,4 +160,4 @@ async def delete_user(id: int):
         conn.close()
 
 if __name__ == "__main__":
-    uvicorn.run("api:app", host="localhost", reload=True)
+    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
