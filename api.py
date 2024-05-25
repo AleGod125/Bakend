@@ -10,6 +10,39 @@ DATABASE = 'bakendbd'
 def get_connection():
     return sqlite3.connect(DATABASE)
 
+# Crear la tabla `users` si no existe al inicio de la aplicación
+def create_table():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+        Nombre TEXT NOT NULL,
+        Apellido TEXT NOT NULL,
+        PhoneNumber INTEGER NOT NULL,
+        Email TEXT NOT NULL,
+        Password TEXT NOT NULL,
+        Brd TEXT NOT NULL
+    )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Llamar a la función para crear la tabla al iniciar la aplicación
+create_table()
+
+def check_table_exists():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users';")
+    table_exists = cursor.fetchone()
+    conn.close()
+    return table_exists is not None
+
+if not check_table_exists():
+    create_table()
+
+
 class UserApi(BaseModel):
     Nombre: str
     Apellido: str  
@@ -63,7 +96,7 @@ async def create_user(user: UserApi):
     conn = get_connection()
     try:
         cursor = conn.cursor()
-        query = "INSERT INTO users (nombre, apellido, PhoneNumber, email, password, Brd) VALUES (?, ?, ?, ?, ?, ?)"
+        query = "INSERT INTO users (Nombre, Apellido, PhoneNumber, Email, Password, Brd) VALUES (?, ?, ?, ?, ?, ?)"
         values = (user.Nombre, user.Apellido, user.PhoneNumber, user.Email, user.Password, user.Brd)
         cursor.execute(query, values)
         conn.commit()
@@ -139,7 +172,5 @@ async def delete_user(id: int):
     finally:
         conn.close()
 
-if __name__ == "__api__":
-    uvicorn.run("api:app",
-                host="localhost",
-                reload=True)
+if __name__ == "__main__":
+    uvicorn.run("api:app", host="localhost", reload=True)
