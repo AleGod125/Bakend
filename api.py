@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import uvicorn
 
 # Configuración de la base de datos SQLite
-DATABASE = 'bakendbd.db'
+DATABASE = 'bakendbd'
 
 def get_connection():
     return sqlite3.connect(DATABASE)
