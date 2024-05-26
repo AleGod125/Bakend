@@ -6,9 +6,9 @@ import uvicorn
 
 mysql_config = {
     'user': 'root',
-    'password': '1234',
-    'host': 'localhost',
-    'database': 'python',
+    'password': 'htsDFxPbLSCjASyZeFIdXKlsmsynwLOo',
+    'host': 'viaduct.proxy.rlwy.net',
+    'database': 'railway',
     'auth_plugin': 'mysql_native_password'
 }
 
@@ -143,5 +143,5 @@ async def delete_user(id: int):
 
 if __name__ == "__api__":
     uvicorn.run("api:app",
-                host="localhost",
+                host="viaduct.proxy.rlwy.net",
                 reload=True)
