@@ -4,10 +4,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
 
-<<<<<<< HEAD
-# Configuración de la base de datos SQLite
-DATABASE = 'bakendbd'
-=======
 mysql_config = {
     'user': 'root',
     'password': '1234',
@@ -17,30 +13,9 @@ mysql_config = {
 }
 
 Connection = mysql.connector.connect(**mysql_config)
->>>>>>> parent of 4745ea7 (Update api.py)
 
 def get_connection():
     return Connection
-
-def create_table():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        UserID INTEGER PRIMARY KEY AUTOINCREMENT,
-        Nombre TEXT NOT NULL,
-        Apellido TEXT NOT NULL,
-        PhoneNumber INTEGER NOT NULL,
-        Email TEXT NOT NULL,
-        Password TEXT NOT NULL,
-        Brd TEXT NOT NULL
-    )
-    ''')
-    conn.commit()
-    conn.close()
-
-# Crear la tabla al iniciar la aplicación
-create_table()
 
 class UserApi(BaseModel):
     Nombre: str
@@ -55,9 +30,9 @@ app = FastAPI()
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://alegod125.github.io"],  # Cambia esto a tu dominio frontend
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
 
@@ -91,13 +66,8 @@ async def create_user(user: UserApi):
         raise HTTPException(status_code=400, detail="La contraseña debe tener más de 6 caracteres")
     
     try:
-<<<<<<< HEAD
-        cursor = conn.cursor()
-        query = "INSERT INTO users (Nombre, Apellido, PhoneNumber, Email, Password, Brd) VALUES (?, ?, ?, ?, ?, ?)"
-=======
         cursor = Connection.cursor()
         query = "INSERT INTO users (nombre, apellido, PhoneNumber, email, password, Brd) VALUES (%s, %s, %s, %s, %s,%s)"
->>>>>>> parent of 4745ea7 (Update api.py)
         values = (user.Nombre, user.Apellido, user.PhoneNumber, user.Email, user.Password, user.Brd)
         cursor.execute(query, values)
         Connection.commit()
@@ -171,13 +141,7 @@ async def delete_user(id: int):
     finally:
         cursor.close()
 
-
-<<<<<<< HEAD
-if __name__ == "__main__":
-    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
-=======
 if __name__ == "__api__":
     uvicorn.run("api:app",
                 host="localhost",
                 reload=True)
->>>>>>> parent of 4745ea7 (Update api.py)
