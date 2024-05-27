@@ -38,7 +38,7 @@ app.add_middleware(
 def usuario_existe(email):
     conn = get_connection()
     cursor = conn.cursor()
-    query = "SELECT COUNT(*) FROM users WHERE email = %s"
+    query = "SELECT COUNT(*) FROM Usuarios WHERE email = %s"
     cursor.execute(query, (email,))
     result = cursor.fetchone()[0]
     cursor.close()
@@ -49,7 +49,7 @@ def usuario_existe(email):
 async def get_User():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM users"
+    query = "SELECT * FROM Usuarios"
     try:
         cursor.execute(query)
         return cursor.fetchall()
@@ -70,7 +70,7 @@ async def create_user(user: UserApi):
     conn = get_connection()
     try:
         cursor = conn.cursor()
-        query = "INSERT INTO users (nombre, apellido, PhoneNumber, email, password, Brd) VALUES (%s, %s, %s, %s, %s, %s)"
+        query = "INSERT INTO Usuarios (nombre, apellido, PhoneNumber, email, password, Brd) VALUES (%s, %s, %s, %s, %s, %s)"
         values = (user.Nombre, user.Apellido, user.PhoneNumber, user.Email, user.Password, user.Brd)
         cursor.execute(query, values)
         conn.commit()
@@ -87,7 +87,7 @@ async def login_user(email: str, password: str):
     conn = get_connection()
     try:
         cursor = conn.cursor(dictionary=True)
-        query = "SELECT * FROM users WHERE Email = %s AND Password = %s"
+        query = "SELECT * FROM Usuarios WHERE Email = %s AND Password = %s"
         cursor.execute(query, (email, password))
         user = cursor.fetchone()
         if user:
@@ -104,7 +104,7 @@ async def login_user(email: str, password: str):
 async def get_ID(email: str, password: str):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT UserID FROM users WHERE Email = %s AND Password = %s"
+    query = "SELECT UserID FROM Usuarios WHERE Email = %s AND Password = %s"
     try:
         cursor.execute(query, (email, password))
         return cursor.fetchall()
@@ -118,7 +118,7 @@ async def get_ID(email: str, password: str):
 async def get_UserInfo(id: int):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM users WHERE UserID = %s"
+    query = "SELECT * FROM Usuarios WHERE UserID = %s"
     try:
         cursor.execute(query, (id,))
         return cursor.fetchall()
@@ -132,7 +132,7 @@ async def get_UserInfo(id: int):
 async def delete_user(id: int):
     conn = get_connection()
     cursor = conn.cursor()
-    query = "DELETE FROM users WHERE UserID = %s"
+    query = "DELETE FROM Usuarios WHERE UserID = %s"
     try:
         cursor.execute(query, (id,))
         conn.commit()
