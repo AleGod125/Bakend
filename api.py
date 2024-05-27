@@ -9,6 +9,7 @@ mysql_config = {
     'password': 'htsDFxPbLSCjASyZeFIdXKlsmsynwLOo',
     'host': 'viaduct.proxy.rlwy.net',
     'database': 'railway',
+    'port': 11061,
     'auth_plugin': 'mysql_native_password'
 }
 
